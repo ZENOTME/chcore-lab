@@ -39,7 +39,7 @@ int stack_backtrace()
 	printk("Stack backtrace:\n");
 	
 	// Your code here.
-	/*
+	
 	u64 sp=*(u64 *)(read_fp());
 	u64 last_sp=(read_fp());
 	u64 lr=*((u64 *)sp+1);
@@ -48,7 +48,6 @@ int stack_backtrace()
 		last_sp=sp;
 		sp=*(u64*)sp;
 	}
-	*/
-	printk("Args %lx\n",*((u64 *)read_fp()+2));
+
 	return 0;
 }
