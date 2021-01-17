@@ -24,12 +24,30 @@ u64 read_fp()
 	return fp;
 }
 
-__attribute__ ((optimize("O1")))
+static inline __attribute__ ((always_inline))
+u64 read_x19()
+{
+	u64 x19;
+	__asm __volatile("mov %0, x19":"=r"(x19));
+	return x19;
+}
+
+
+__attribute__ ((optimize("O5")))
 int stack_backtrace()
 {
 	printk("Stack backtrace:\n");
-
+	
 	// Your code here.
+	
+	u64 sp=*(u64 *)(read_fp());
+	u64 last_sp=(read_fp());
+	u64 lr=*((u64 *)sp+1);
+	while(sp){
+		printk("LR %lx FP %lx Args %lx %lx %lx %lx %x\n",lr,sp,*((u64 *)last_sp+2),*((u64 *)last_sp+3),*((u64 *)last_sp+4),*((u64 *)last_sp+5),*((u64 *)last_sp+6));
+		last_sp=sp;
+		sp=*(u64*)sp;
+	}
 
 	return 0;
 }
