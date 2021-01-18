@@ -81,6 +81,14 @@ void mm_init(void)
 	kdebug("[CHCORE] mm: free_mem_start is 0x%lx, free_mem_end is 0x%lx\n",
 	       free_mem_start, phys_to_virt(PHYSICAL_MEM_END));
 
+	/*memory layout
+	 *-----------PHYSICAL_MEM_END
+	 * data
+	 *-----------(START_VADDR)start_vadder=24M ? why
+	 * matedata
+	 *-----------free_mem_start
+	 *-----------img_end
+	 */
 	if ((free_mem_start + npages * sizeof(struct page)) > start_vaddr) {
 		BUG("kernel panic: init_mm metadata is too large!\n");
 	}
