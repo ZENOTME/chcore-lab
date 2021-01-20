@@ -110,6 +110,44 @@ void test_page_mappings(vaddr_t * pgtbl, paddr_t * pas,
 	}
 }
 
+MU_TEST(test_map_page_one)
+{	
+	//================init====================
+	/* Test both map_apge and unmap_page. */
+	int err;
+	paddr_t pa;
+	vaddr_t va;
+	vmr_prop_t flags;
+	vaddr_t *root;
+	pte_t *entry;
+
+	paddr_t *pas;
+	vaddr_t *vas;
+	int i;
+	int j;
+
+	/* init vmspace */
+	// err = init_vmspace(&space);
+	//root = calloc(PAGE_SIZE, 1);
+	root = get_pages(0);
+	// mu_assert_int_eq(0, err);
+
+	//=============first test===================
+	//=============empty test===================
+	va = 0x100000;
+	err = query_in_pgtbl(root, va, &pa, &entry);
+	mu_assert_int_eq(-ENOMAPPING, err);
+
+	//=============second test==================
+	//=============map test=====================
+	err = map_range_in_pgtbl(root, va, 0x100000, PAGE_SIZE, DEFAULT_FLAGS);
+	mu_assert_int_eq(0, err);
+	err = query_in_pgtbl(root, va, &pa, &entry);
+	mu_assert_int_eq(0, err);
+	mu_check(pa == 0x100000);
+
+}
+
 MU_TEST(test_map_unmap_page)
 {
 	/* Test both map_apge and unmap_page. */
@@ -200,6 +238,7 @@ MU_TEST(test_map_unmap_page)
 
 MU_TEST_SUITE(test_suite)
 {
+	//MU_RUN_TEST(test_map_page_one);
 	MU_RUN_TEST(test_map_unmap_page);
 }
 

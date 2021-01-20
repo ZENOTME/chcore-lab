@@ -109,10 +109,10 @@ static int get_next_ptp(ptp_t * cur_ptp, u32 level, vaddr_t va,
 	default:
 		BUG_ON(1);
 	}
-
 	entry = &(cur_ptp->ent[index]);
 	if (IS_PTE_INVALID(entry->pte)) {
 		if (alloc == false) {
+			*pte = entry;
 			return -ENOMAPPING;
 		} else {
 			/* alloc a new page table page */
@@ -162,9 +162,29 @@ static int get_next_ptp(ptp_t * cur_ptp, u32 level, vaddr_t va,
 int query_in_pgtbl(vaddr_t * pgtbl, vaddr_t va, paddr_t * pa, pte_t ** entry)
 {
 	// <lab2>
-
+	ptp_t *cur_ptp=(ptp_t *)pgtbl;
+	ptp_t *next_ptp=NULL;
+	pte_t *temp_entry=NULL;
+	int ret_flag=0;
+//printk("=======================================================\n");
+	for(u32 level=0;level<3;level++){
+		ret_flag=get_next_ptp(cur_ptp,level,va,&next_ptp,&temp_entry,true);
+		if(ret_flag<0)return -1;
+		else if(ret_flag==BLOCK_PTP){
+			*pa=(paddr_t)next_ptp;
+			*entry=temp_entry;
+			return ret_flag;
+		}
+		else{
+			cur_ptp=next_ptp;
+		}
+	}
+	ret_flag=get_next_ptp(cur_ptp,3,va,&next_ptp,&temp_entry,false);
+	*pa=(paddr_t)next_ptp;
+	*entry=temp_entry;
+	return ret_flag;
 	// </lab2>
-	return 0;
+	//return 0;
 }
 
 /*
@@ -182,12 +202,36 @@ int query_in_pgtbl(vaddr_t * pgtbl, vaddr_t va, paddr_t * pa, pte_t ** entry)
  * and it is convenient for you to call set_pte_flags to set the page
  * permission bit. Don't forget to call flush_tlb at the end of this function 
  */
+static int map_single_page_in_pgtbl(vaddr_t * pgtbl,vaddr_t va,paddr_t pa,vmr_prop_t flags){
+	int ret_flag=0;
+	paddr_t temp_pa=0;
+	pte_t *entry=NULL;
+	ret_flag=query_in_pgtbl(pgtbl,va,&temp_pa,&entry);
+	BUG_ON(ret_flag!=-ENOMAPPING);
+	entry->pte=0;
+	entry->l3_page.is_valid=1;
+	entry->l3_page.is_page=1;
+	entry->l3_page.pfn = pa>> PAGE_SHIFT;
+	set_pte_flags(entry,flags,KERNEL_PTE);
+	return 0;
+}
+
 int map_range_in_pgtbl(vaddr_t * pgtbl, vaddr_t va, paddr_t pa,
 		       size_t len, vmr_prop_t flags)
 {
 	// <lab2>
-
+	// align work
+	vaddr_t va_begin=ROUND_DOWN(va,PAGE_SIZE);
+	vaddr_t va_end=ROUND_UP(va+len,PAGE_SIZE);
+	paddr_t pa_begin=ROUND_DOWN(pa,PAGE_SIZE);
+	paddr_t pa_end=ROUND_UP(pa+len,PAGE_SIZE);
+	BUG_ON(((va_end-va_begin)/PAGE_SIZE)!=((pa_end-pa_begin)/PAGE_SIZE));
+	int npage=(va_end-va_begin)/PAGE_SIZE;
+	for(int i=0;i<npage;i++){
+		map_single_page_in_pgtbl(pgtbl,va+i*PAGE_SIZE,pa+i*PAGE_SIZE,flags);
+	}
 	// </lab2>
+	flush_tlb();
 	return 0;
 }
 
@@ -204,11 +248,27 @@ int map_range_in_pgtbl(vaddr_t * pgtbl, vaddr_t va, paddr_t pa,
  * call flush_tlb() at the end of function
  * 
  */
+
+static int unmap_single_page_in_pgtbl(vaddr_t * pgtbl,vaddr_t va){
+	int ret_flag=0;
+	paddr_t temp_pa=0;
+	pte_t *entry=NULL;
+	ret_flag=query_in_pgtbl(pgtbl,va,&temp_pa,&entry);
+	BUG_ON(ret_flag==-ENOMAPPING);
+	entry->pte=0;
+	return 0;
+}
 int unmap_range_in_pgtbl(vaddr_t * pgtbl, vaddr_t va, size_t len)
 {
 	// <lab2>
-
+	vaddr_t va_begin=ROUND_DOWN(va,PAGE_SIZE);
+	vaddr_t va_end=ROUND_UP(va+len,PAGE_SIZE);
+	int npage=(va_end-va_begin)/PAGE_SIZE;
+	for(int i=0;i<npage;i++){
+		unmap_single_page_in_pgtbl(pgtbl,va+i*PAGE_SIZE);
+	}
 	// </lab2>
+	flush_tlb();
 	return 0;
 }
 

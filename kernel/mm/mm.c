@@ -97,7 +97,6 @@ void mm_init(void)
 	kdebug("page_meta_start: 0x%lx, real_start_vadd: 0x%lx,"
 	       "npages: 0x%lx, meta_page_size: 0x%lx\n",
 	       page_meta_start, start_vaddr, npages, sizeof(struct page));
-
 	/* buddy alloctor for managing physical memory */
 	init_buddy(&global_mem, page_meta_start, start_vaddr, npages);
 
