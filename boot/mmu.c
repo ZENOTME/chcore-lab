@@ -89,7 +89,7 @@ void init_boot_pt(void)
 
 	start_entry_idx = GET_L2_INDEX(kva);
 	/* Note: assert(start_entry_idx == 0) */
-	end_entry_idx = start_entry_idx + PHYSMEM_BOOT_END / SIZE_2M;
+	end_entry_idx = start_entry_idx + PERIPHERAL_BASE / SIZE_2M;
 	/* Note: assert(end_entry_idx < PTP_ENTIRES) */
 
 	/*

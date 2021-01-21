@@ -18,6 +18,7 @@
 #include "slab.h"
 #include "page_table.h"
 
+#include <common/kmalloc.h>
 extern unsigned long *img_end;
 
 #define PHYSICAL_MEM_START (24*1024*1024)	//24M
@@ -27,7 +28,6 @@ extern unsigned long *img_end;
 
 #define PHYSICAL_MEM_END (PHYSICAL_MEM_START+NPAGES*BUDDY_PAGE_SIZE)
 
-extern void flush_tlb(void);
 /*
  * Layout:
  *
@@ -111,15 +111,17 @@ void mm_init(void)
 	    phys_to_virt(ROUND_UP((vaddr_t) (&img_end), PAGE_SIZE));
 	npages = NPAGES;
 	start_vaddr = START_VADDR;
-	kdebug("[CHCORE] mm: free_mem_start is 0x%lx, free_mem_end is 0x%lx\n",
-	       free_mem_start, phys_to_virt(PHYSICAL_MEM_END));
+	kdebug("[CHCORE] mm: free_mem_start is 0x%lx,data_start is 0x%lx, free_mem_end is 0x%lx\n",
+	       free_mem_start, start_vaddr,phys_to_virt(PHYSICAL_MEM_END));
 
 	/*memory layout
-	 *-----------PHYSICAL_MEM_END
+	 *---512M------free_mem_end(PHYSICAL_MEM_END)
+	 * data 
+ 	 *---256M---- 
 	 * data
-	 *-----------(START_VADDR)start_vadder=24M ? why
+	 *---24M------(START_VADDR)
 	 * matedata
-	 *-----------free_mem_start
+	 *---1M------free_mem_start 
 	 *-----------img_end
 	 */
 	if ((free_mem_start + npages * sizeof(struct page)) > start_vaddr) {
@@ -136,8 +138,8 @@ void mm_init(void)
 	/* slab alloctor for allocating small memory regions */
 	init_slab();
 
-	map_kernel_space(KBASE + (128UL << 21), 128UL << 21, 128UL << 21);
+	//map_kernel_space(KBASE + (128UL << 21), 128UL << 21, 128UL << 21);
 	//check whether kernel space [KABSE + 256 : KBASE + 512] is mapped 
-kinfo("KERNEL_SPACE_CHECK\n");
 	kernel_space_check();
+
 }
