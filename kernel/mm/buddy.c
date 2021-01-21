@@ -13,7 +13,6 @@
 void init_buddy(struct phys_mem_pool *pool, struct page *start_page,
 		vaddr_t start_addr, u64 page_num)
 {
-printk("Init buddy start\n");
 	int order;
 	int page_idx;
 	struct page *page;
@@ -26,29 +25,24 @@ printk("Init buddy start\n");
 	pool->pool_phys_page_num = page_num;
 
 	/* Init the free lists */
-printk("Init the free list\n");
 	for (order = 0; order < BUDDY_MAX_ORDER; ++order) {
 		pool->free_lists[order].nr_free = 0;
 		init_list_head(&(pool->free_lists[order].free_list));
 	}
 
 	/* Clear the page_metadata area. */
-printk("memset metadata\n");
 	memset((char *)start_page, 0, page_num * sizeof(struct page));
 	/* Init the page_metadata area. */
-printk("Init page\n");
 	for (page_idx = 0; page_idx < page_num; ++page_idx) {
 		page = start_page + page_idx;
 		page->allocated = 1;
 		page->order = 0;
 	}
 	/* Put each physical memory page into the free lists. */
-printk("Put page into lists\n");
 	for (page_idx = 0; page_idx < page_num; ++page_idx) {
 		page = start_page + page_idx;
 		buddy_free_pages(pool, page);
 	}
-printk("Init Over");
 }
 
 static struct page *get_buddy_chunk(struct phys_mem_pool *pool,

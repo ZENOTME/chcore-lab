@@ -16,6 +16,7 @@
 
 #include "buddy.h"
 #include "slab.h"
+#include "page_table.h"
 
 extern unsigned long *img_end;
 
@@ -26,6 +27,7 @@ extern unsigned long *img_end;
 
 #define PHYSICAL_MEM_END (PHYSICAL_MEM_START+NPAGES*BUDDY_PAGE_SIZE)
 
+extern void flush_tlb(void);
 /*
  * Layout:
  *
@@ -46,13 +48,45 @@ unsigned long get_ttbr1(void)
  * [va:va+size] to physical addres [pa:pa+size].
  * 1. get the kernel pgd address
  * 2. fill the block entry with corresponding attribution bit
- *
+ * kernel_spcae Only 1G
  */
+static void map_single_kernel_block(ptp_t* ttbr1_ptp,vaddr_t va, paddr_t pa){
+	pte_t* entry;
+	/*from L2 get L2 entry(block)*/
+	entry=&ttbr1_ptp->ent[GET_L2_INDEX(va)];
+	entry->pte=0;
+	/*set addr and attr*/
+	entry->l2_block.is_valid=1;
+	entry->l2_block.attr_index=4;
+	entry->l2_block.AF=1;
+	entry->l2_block.UXN=1;
+	entry->l2_block.pfn=pa>>21;
+}
+
 void map_kernel_space(vaddr_t va, paddr_t pa, size_t len)
 {
+	BUG_ON(va+len-KBASE>0x40000000);
 	// <lab2>
-
+	/*get level2*/
+	pte_t* entry;
+	paddr_t ttbr1=get_ttbr1();
+	ptp_t *ttbr1_ptp=(ptp_t *)phys_to_virt(ttbr1);
+	entry=&(ttbr1_ptp->ent[GET_L0_INDEX(va)]);
+	ttbr1_ptp=(ptp_t *)GET_NEXT_PTP(entry);
+	entry=&(ttbr1_ptp->ent[GET_L1_INDEX(va)]);
+	ttbr1_ptp=(ptp_t *)GET_NEXT_PTP(entry);
+	//kinfo("TEST %lx\n",&entry);
+	paddr_t pa_begin=ROUND_DOWN(pa,L2_BLOCK_SIZE);
+	paddr_t pa_end=ROUND_UP(pa+len,L2_BLOCK_SIZE);
+	paddr_t va_begin=ROUND_DOWN(va,L2_BLOCK_SIZE);
+	paddr_t va_end=ROUND_UP(va+len,L2_BLOCK_SIZE);
+	int nblocks=(va_end-va_begin)/L2_BLOCK_SIZE;
+	BUG_ON(nblocks!=(pa_end-pa_begin)/L2_BLOCK_SIZE);
+	for(int i=0;i<nblocks;i++){
+		map_single_kernel_block(ttbr1_ptp,va_begin+i*L2_BLOCK_SIZE, pa_begin+i*L2_BLOCK_SIZE);
+	}
 	// </lab2>
+	flush_tlb();
 }
 
 void kernel_space_check(void)
@@ -60,7 +94,6 @@ void kernel_space_check(void)
 	unsigned long kernel_val;
 	for (unsigned long i = 128; i < 256; i++) {
 		kernel_val = *(unsigned long *)(KBASE + (i << 21));
-		kinfo("kernel_val: %lx\n", kernel_val);
 	}
 	kinfo("kernel space check pass\n");
 }
@@ -105,5 +138,6 @@ void mm_init(void)
 
 	map_kernel_space(KBASE + (128UL << 21), 128UL << 21, 128UL << 21);
 	//check whether kernel space [KABSE + 256 : KBASE + 512] is mapped 
+kinfo("KERNEL_SPACE_CHECK\n");
 	kernel_space_check();
 }
