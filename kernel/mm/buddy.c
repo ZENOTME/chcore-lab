@@ -32,14 +32,12 @@ void init_buddy(struct phys_mem_pool *pool, struct page *start_page,
 
 	/* Clear the page_metadata area. */
 	memset((char *)start_page, 0, page_num * sizeof(struct page));
-
 	/* Init the page_metadata area. */
 	for (page_idx = 0; page_idx < page_num; ++page_idx) {
 		page = start_page + page_idx;
 		page->allocated = 1;
 		page->order = 0;
 	}
-
 	/* Put each physical memory page into the free lists. */
 	for (page_idx = 0; page_idx < page_num; ++page_idx) {
 		page = start_page + page_idx;
@@ -75,6 +73,16 @@ static struct page *get_buddy_chunk(struct phys_mem_pool *pool,
 	return virt_to_page(pool, (void *)buddy_chunk_addr);
 }
 
+static void add_page(struct phys_mem_pool *pool,struct page* new){
+	new->allocated=0;
+	list_add(&new->node,&pool->free_lists[new->order].free_list);
+	pool->free_lists[new->order].nr_free++;
+}
+
+static void del_page(struct phys_mem_pool *pool,struct page* old){
+	list_del(&old->node);
+	pool->free_lists[old->order].nr_free--;
+}
 /*
  * split_page: split the memory block into two smaller sub-block, whose order
  * is half of the origin page.
@@ -90,8 +98,21 @@ static struct page *split_page(struct phys_mem_pool *pool, u64 order,
 			       struct page *page)
 {
 	// <lab2>
-	struct page *split_page = NULL;
-	return split_page;
+	struct page *spl_page = NULL;
+	struct page *buddy_page = NULL;
+	if(order<page->order){
+		del_page(pool,page);
+		page->order--;
+		buddy_page=get_buddy_chunk(pool,page);
+		buddy_page->order=page->order;
+		add_page(pool,page);
+		add_page(pool,buddy_page);
+		spl_page=split_page(pool,order,page);
+		
+	}else{
+		spl_page=page;
+	}
+	return spl_page;
 	// </lab2>
 }
 
@@ -107,7 +128,22 @@ struct page *buddy_get_pages(struct phys_mem_pool *pool, u64 order)
 {
 	// <lab2>
 	struct page *page = NULL;
-
+	while(!page){
+		//find the free page
+		if(pool->free_lists[order].nr_free>0){
+			page=(struct page*)pool->free_lists[order].free_list.next;	
+			del_page(pool,page);
+			page->allocated=1;
+			break;
+		}
+		//can't find
+		for(int i=order+1;i<BUDDY_MAX_ORDER;i++){
+			if(pool->free_lists[i].nr_free>0){
+				split_page(pool,order,(struct page*)pool->free_lists[i].free_list.next);
+				break;
+			}
+		}
+	}
 	return page;
 	// </lab2>
 }
@@ -124,9 +160,23 @@ struct page *buddy_get_pages(struct phys_mem_pool *pool, u64 order)
 static struct page *merge_page(struct phys_mem_pool *pool, struct page *page)
 {
 	// <lab2>
-
-	struct page *merge_page = NULL;
-	return merge_page;
+	struct page *mer_page = NULL;
+	struct page *buddy_page=get_buddy_chunk(pool,page);
+	if(page->order<BUDDY_MAX_ORDER-1 && buddy_page!=NULL && buddy_page->allocated==0 && buddy_page->order==page->order ){
+		list_del(&buddy_page->node);
+		pool->free_lists[page->order].nr_free--;
+		if(page<buddy_page){
+			page->order++;
+			mer_page=merge_page(pool,page);
+		}else{
+			buddy_page->order++;
+			mer_page=merge_page(pool,buddy_page);
+		}
+	}
+	else{
+		mer_page=page;
+	}
+	return mer_page;
 	// </lab2>
 }
 
@@ -140,7 +190,10 @@ static struct page *merge_page(struct phys_mem_pool *pool, struct page *page)
 void buddy_free_pages(struct phys_mem_pool *pool, struct page *page)
 {
 	// <lab2>
-
+//printk("before merge free %lx \n",page);
+	page=merge_page(pool,page);
+//printk("after merge free %lx \n",page);
+	add_page(pool,page);
 	// </lab2>
 }
 

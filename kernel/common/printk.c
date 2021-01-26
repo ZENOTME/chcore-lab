@@ -71,6 +71,15 @@ static int prints(char **out, const char *string, int width, int flags)
 		if (flags & PAD_ZERO)
 			padchar = '0';
 	}
+
+	//len of string 
+	//width of padding
+	//if PAD_ZERO padchar is '0'
+	//usage: 00000****
+	//else padchar is ' '
+	//usage: ****     
+	//pc is the len of outpuch string
+	
 	if (!(flags & PAD_RIGHT)) {
 		for (; width > 0; --width) {
 			simple_outputchar(out, padchar);
@@ -97,14 +106,36 @@ static int prints(char **out, const char *string, int width, int flags)
 // you may need to call `prints`
 // you do not need to print prefix like "0x", "0"...
 // Remember the most significant digit is printed first.
+
+
+static void unsigned_to_string(unsigned long long u,char* buf,int base,int letbase){
+	int t=0;
+	while(u){
+		int i=u%base;
+		if(i<10)
+			buf[t++]=i+'0';
+		else
+			buf[t++]=i-10+letbase;
+		u/=base;
+	}
+	buf[t]='\0';
+	for(int i=0;i<t-1-i;i++){
+		buf[i]^=buf[t-1-i];
+		buf[t-1-i]^=buf[i];
+		buf[i]^=buf[t-1-i];
+	}
+}
+
+
+
 static int printk_write_num(char **out, long long i, int base, int sign,
 			    int width, int flags, int letbase)
 {
 	char print_buf[PRINT_BUF_LEN];
 	char *s;
-	int t, neg = 0, pc = 0;
+	int neg = 0, pc = 0;
 	unsigned long long u = i;
-
+	
 	if (i == 0) {
 		print_buf[0] = '0';
 		print_buf[1] = '\0';
@@ -119,7 +150,19 @@ static int printk_write_num(char **out, long long i, int base, int sign,
 	// store the digitals in the buffer `print_buf`:
 	// 1. the last postion of this buffer must be '\0'
 	// 2. the format is only decided by `base` and `letbase` here
+	if(base==10){
+		unsigned_to_string(u,&print_buf[1],10,letbase);
+	}
+	else if(base==8){
+		unsigned_to_string(u,&print_buf[1],8,letbase);
+	}
+	else if(base==16){
+		unsigned_to_string(u,&print_buf[1],16,letbase);
+	}
 
+	
+
+	s=&print_buf[1];
 	if (neg) {
 		if (width && (flags & PAD_ZERO)) {
 			simple_outputchar(out, '-');
