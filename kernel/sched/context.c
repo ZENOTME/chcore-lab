@@ -54,7 +54,9 @@ void init_thread_ctx(struct thread *thread, u64 stack, u64 func, u32 prio,
 	 *
 	 * Check out macro in registers.h for more help
 	 */
-
+	thread->thread_ctx->ec.reg[SP_EL0]=stack;
+	thread->thread_ctx->ec.reg[ELR_EL1]=func;
+	thread->thread_ctx->ec.reg[SPSR_EL1]=SPSR_EL1_USER;
 	/* Fill the context of the thread */
 
 	/* Set thread type */

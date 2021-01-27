@@ -161,12 +161,14 @@ static u64 load_binary(struct process *process,
 			 * page aligned segment size. Take care of the page alignment when allocating
 			 * and mapping physical memory.
 			 */
-
+			seg_sz=elf->p_headers[i].p_memsz;
+			p_vaddr=elf->p_headers[i].p_vaddr;
 			pmo = obj_alloc(TYPE_PMO, sizeof(*pmo));
 			if (!pmo) {
 				r = -ENOMEM;
 				goto out_free_cap;
 			}
+			seg_map_sz=ROUND_UP(seg_sz,PAGE_SIZE);
 			pmo_init(pmo, PMO_DATA, seg_map_sz, 0);
 			pmo_cap[i] = cap_alloc(process, pmo, 0);
 			if (pmo_cap[i] < 0) {
@@ -179,7 +181,7 @@ static u64 load_binary(struct process *process,
 			 * You should copy data from the elf into the physical memory in pmo.
 			 * The physical address of a pmo can be get from pmo->start.
 			 */
-
+			memcpy(phys_to_virt(pmo->start),(bin+elf->p_headers[i].p_offset),elf->p_headers[i].p_filesz);
 			flags = PFLAGS2VMRFLAGS(elf->p_headers[i].p_flags);
 
 			ret = vmspace_map_range(vmspace,
