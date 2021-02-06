@@ -26,6 +26,8 @@ void exception_init_per_cpu(void)
 	 * Setup the exception vector with the asm function written in exception.S
 	 */
 	disable_irq();
+	set_exception_vector();
+	kinfo("Set exception vector\n");
 }
 
 void exception_init(void)
@@ -37,7 +39,6 @@ void handle_entry_c(int type, u64 esr, u64 address)
 {
 	/* ec: exception class */
 	u32 esr_ec = GET_ESR_EL1_EC(esr);
-
 	kdebug
 	    ("Interrupt type: %d, ESR: 0x%lx, Fault address: 0x%lx, EC 0b%b\n",
 	     type, esr, address, esr_ec);
@@ -48,8 +49,22 @@ void handle_entry_c(int type, u64 esr, u64 address)
 		 * Handle exceptions as required in the lab document. Checking exception codes in
 		 * esr.h may help.
 		 */
+	/*
+	case ESR_EL1_EC_IABT_LEL:
+		kinfo("ESR_EL1_EC_IABT_LET\n");
+		sys_exit(ESR_EL1_EC_IABT_LEL);
+		break;
+	*/
+	case ESR_EL1_EC_DABT_CEL:
+	case ESR_EL1_EC_DABT_LEL:
+		do_page_fault(esr,0);
+		break;
+	case ESR_EL1_EC_UNKNOWN:
+		kinfo(UNKNOWN);
+		sys_exit(-12);
+		break;
 	default:
-		kdebug("Unsupported Exception ESR %lx\n", esr);
+		kdebug("Unsupported Exception ESR %lx esr_ec %d\n", esr,esr_ec);
 		break;
 	}
 }

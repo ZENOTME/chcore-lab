@@ -86,6 +86,21 @@ int handle_trans_fault(struct vmspace *vmspace, vaddr_t fault_addr)
 	 * are recorded in a radix tree for easy management. Such code
 	 * has been omitted in our lab for simplification.
 	 */
+	vmr=find_vmr_for_va(vmspace,fault_addr);
+	if(!vmr)goto bad;
+	pmo=vmr->pmo;
+	if(pmo->type!=PMO_ANONYM)goto bad;
 
+	/* Allocate and setup a user stack for the init thread */
+	pmo = obj_alloc(TYPE_PMO, sizeof(*pmo));
+	if (!pmo) goto bad;
+	pmo_init(pmo, PMO_DATA, PAGE_SIZE, 0);
+
+	map_range_in_pgtbl(vmspace->pgtbl,ROUND_DOWN(fault_addr,PAGE_SIZE),pmo->start,pmo->size,vmr->perm);
+
+kdebug("finish page_fault\n");
 	return 0;
+	
+bad:
+	return -ENOMAPPING;
 }

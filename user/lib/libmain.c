@@ -13,5 +13,5 @@ void _start_c(long *p)
 	 * Lab3: Your code here
 	 * Complete the main function
 	 */
-	return;
+	usys_exit(0);
 }

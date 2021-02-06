@@ -12,7 +12,9 @@ int main(int argc, char *argv[], char *envp[])
 	char *s;
 
 	start = usys_handle_brk(0);
+	printf("address is %lx\n",start);
 	end = usys_handle_brk(start + ALLOCATE_SIZE);
+	printf("address is %lx\n",end);
 
 	if (end - start < ALLOCATE_SIZE) {
 		printf("sbrk not correctly implemented\n");

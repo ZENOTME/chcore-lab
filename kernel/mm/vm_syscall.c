@@ -347,6 +347,26 @@ u64 sys_handle_brk(u64 addr)
 	 * top.
 	 *
 	 */
+printk(" addr is %lx and vmspace->heap_vmr is %lx\n",addr,vmspace->heap_vmr);	
+	if(!vmspace->heap_vmr||addr==0){
+		pmo = obj_alloc(TYPE_PMO, sizeof(*pmo));
+		if (!pmo) {
+			return -EINVAL;
+		}
+		pmo_init(pmo, PMO_ANONYM, 0, 0);
+		vmr=init_heap_vmr(vmspace,vmspace->user_current_heap,pmo);
+		vmspace->heap_vmr=vmr;
+		retval=vmspace->user_current_heap;
+	}
+	else if(addr>=(vmspace->heap_vmr->start+vmspace->heap_vmr->size)){
+		len=addr-(vmspace->heap_vmr->start+vmspace->heap_vmr->size);
+		vmspace->heap_vmr->size+=len;
+		vmspace->heap_vmr->pmo->size+=len;
+		retval=vmspace->user_current_heap+vmspace->heap_vmr->size;
+	}
+	else if(addr<(vmspace->heap_vmr)){
+		retval=-EINVAL;
+	}
 
 	/*
 	 * return origin heap addr on failure;
