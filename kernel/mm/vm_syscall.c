@@ -322,7 +322,7 @@ u64 sys_handle_brk(u64 addr)
 	size_t len;
 	u64 retval;
 	int ret;
-
+	int pmo_cap;
 	vmspace = obj_get(current_process, VMSPACE_OBJ_ID, TYPE_VMSPACE);
 
 	/*
@@ -354,6 +354,11 @@ printk(" addr is %lx and vmspace->heap_vmr is %lx\n",addr,vmspace->heap_vmr);
 			return -EINVAL;
 		}
 		pmo_init(pmo, PMO_ANONYM, 0, 0);
+		int pmo_cap = cap_alloc(current_process, pmo, 0);
+		if(pmo_cap<0){
+			retval=pmo_cap;
+			obj_free(pmo);
+		}
 		vmr=init_heap_vmr(vmspace,vmspace->user_current_heap,pmo);
 		vmspace->heap_vmr=vmr;
 		retval=vmspace->user_current_heap;

@@ -13,7 +13,7 @@
 #pragma once
 
 #include <common/types.h>
-
+#include <common/list.h>
 #define RADIX_NODE_BITS (9)
 #define RADIX_NODE_SIZE (1 << (RADIX_NODE_BITS))
 #define RADIX_NODE_MASK (RADIX_NODE_SIZE - 1)
@@ -28,12 +28,18 @@ struct radix_node {
 struct radix {
 	struct radix_node *root;
 	void (*value_deleter) (void *);
+	u64 index;
+	struct list_head empty_head;
 };
-
+struct empty_index{
+	struct list_head node;
+	u64 index;
+};
 /* interfaces */
 struct radix *new_radix(void);
 void init_radix(struct radix *radix);
-int radix_add(struct radix *radix, u64 key, void *value);
+int radix_add(struct radix *radix, void *value);
+int _radix_add(struct radix *radix, u64 key, void *value);
 void *radix_get(struct radix *radix, u64 key);
 int radix_free(struct radix *radix);
 int radix_del(struct radix *radix, u64 key);

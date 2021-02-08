@@ -269,6 +269,15 @@ void pmo_init(struct pmobject *pmo, pmo_type_t type, size_t len, paddr_t paddr)
 	}
 }
 
+void commit_page_to_pmo(struct pmobject *pmo, paddr_t pa)
+{
+	int ret;
+
+	BUG_ON(pmo->type != PMO_ANONYM);
+	ret = radix_add(pmo->radix, (void *)pa);
+	BUG_ON(ret != 0);
+}
+/*
 void commit_page_to_pmo(struct pmobject *pmo, u64 index, paddr_t pa)
 {
 	int ret;
@@ -277,7 +286,7 @@ void commit_page_to_pmo(struct pmobject *pmo, u64 index, paddr_t pa)
 	ret = radix_add(pmo->radix, index, (void *)pa);
 	BUG_ON(ret != 0);
 }
-
+*/
 /* return 0 (NULL) when not found */
 paddr_t get_page_from_pmo(struct pmobject *pmo, u64 index)
 {

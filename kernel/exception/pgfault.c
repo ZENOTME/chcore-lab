@@ -92,11 +92,11 @@ int handle_trans_fault(struct vmspace *vmspace, vaddr_t fault_addr)
 	if(pmo->type!=PMO_ANONYM)goto bad;
 
 	/* Allocate and setup a user stack for the init thread */
-	pmo = obj_alloc(TYPE_PMO, sizeof(*pmo));
-	if (!pmo) goto bad;
-	pmo_init(pmo, PMO_DATA, PAGE_SIZE, 0);
+	pa=(paddr_t) virt_to_phys(kmalloc(PAGE_SIZE));
+	commit_page_to_pmo(pmo,pa);
+	pmo->size+=PAGE_SIZE;
 
-	map_range_in_pgtbl(vmspace->pgtbl,ROUND_DOWN(fault_addr,PAGE_SIZE),pmo->start,pmo->size,vmr->perm);
+	map_range_in_pgtbl(vmspace->pgtbl,ROUND_DOWN(fault_addr,PAGE_SIZE),pa,PAGE_SIZE,vmr->perm);
 
 kdebug("finish page_fault\n");
 	return 0;

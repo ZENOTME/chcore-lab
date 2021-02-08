@@ -9,7 +9,7 @@
  *   PURPOSE.
  *   See the Mulan PSL v1 for more details.
  */
-
+#define CHCORE
 #ifdef CHCORE
 #include <common/kmalloc.h>
 #include <common/kprint.h>
@@ -38,6 +38,8 @@ void init_radix(struct radix *radix)
 	radix->root = kzalloc(sizeof(*radix->root));
 	BUG_ON(!radix->root);
 	radix->value_deleter = NULL;
+	radix->index=0;
+	init_list_head(&radix->empty_head);
 }
 
 void init_radix_w_deleter(struct radix *radix, void (*value_deleter) (void *))
@@ -58,7 +60,31 @@ static struct radix_node *new_radix_node(void)
 	return n;
 }
 
-int radix_add(struct radix *radix, u64 key, void *value)
+int radix_add(struct radix *radix,void *value){
+	int ret;
+	struct empty_index *empty_node;
+	int index;
+	if(!list_empty(&radix->empty_head)){
+		empty_node=(struct empty_index*)radix->empty_head.next;
+		index=empty_node->index;
+		ret=_radix_add(radix,index,value);
+		if(ret==0){
+			list_del((struct list_head*)empty_node);
+			kfree(empty_node);
+		}
+		return ret;
+
+	}
+	else{
+		if(radix->index==(u64)-1)return -1;
+		ret=_radix_add(radix,radix->index,value);
+		if(ret==0){
+			radix->index++;
+		}
+		return ret;
+	}
+}
+int _radix_add(struct radix *radix, u64 key, void *value)
 {
 	struct radix_node *node;
 	struct radix_node *new;
@@ -133,7 +159,11 @@ void *radix_get(struct radix *radix, u64 key)
 
 int radix_del(struct radix *radix, u64 key)
 {
-	return radix_add(radix, key, NULL);
+	struct empty_index* node;
+	node=kmalloc(sizeof(struct empty_index));
+	node->index=key;
+	list_add((struct list_head*)node,&radix->empty_head);
+	return _radix_add(radix, key, NULL);
 }
 
 static void radix_free_node(struct radix_node *node, int node_level,
