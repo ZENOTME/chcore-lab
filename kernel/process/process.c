@@ -87,6 +87,11 @@ static int expand_slot_table(struct slot_table *slot_table)
 	memcpy(new_slot_table.full_slots_bmp, slot_table->full_slots_bmp,
 	       BITS_TO_LONGS(BITS_TO_LONGS(old_size)) * sizeof(unsigned long));
 	slot_table->slots_size = new_size;
+	
+	kfree(slot_table->slots);
+	kfree(slot_table->slots_bmp);
+	kfree(slot_table->full_slots_bmp);
+	
 	slot_table->slots = new_slot_table.slots;
 	slot_table->slots_bmp = new_slot_table.slots_bmp;
 	slot_table->full_slots_bmp = new_slot_table.full_slots_bmp;
@@ -239,7 +244,7 @@ static int ramdisk_read_file(char *path, char **buf)
 }
 
 /* process_create_root: create the root process */
-void process_create_root(char *bin_name)
+void  process_create_root(char *bin_name)
 {
 	struct process *root_process;
 	int thread_cap;

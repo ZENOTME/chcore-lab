@@ -31,6 +31,7 @@ void sys_putc(char ch)
 	 * Lab3: Your code here
 	 * Send ch to the screen in anyway as your like
 	 */
+	uart_send(ch);
 }
 
 u32 sys_getc(void)
@@ -53,7 +54,37 @@ u32 sys_get_cpu_id(void)
  * to functions accordingly
  */
 const void *syscall_table[NR_SYSCALL] = {
-	[0 ... NR_SYSCALL - 1] = sys_debug,
+	/*
+	#define SYS_putc				0
+	#define SYS_getc				1
+	#define SYS_yield				2
+	#define SYS_exit				3
+	#define SYS_sleep				4
+	#define SYS_create_pmo				5
+	#define SYS_map_pmo				6
+	#define SYS_create_thread			7
+	#define SYS_create_process			8
+	#define SYS_register_server			9
+	#define SYS_register_client			10
+	#define SYS_get_conn_stack			11
+	#define SYS_ipc_call				12
+	#define SYS_ipc_return				13
+	#define SYS_cap_copy_to				15
+	#define SYS_cap_copy_from			16
+	#define SYS_unmap_pmo				17
+	#define SYS_set_affinity                        18
+	#define SYS_get_affinity                        19
+	#define SYS_create_device_pmo			20
+	*/
+	[SYS_putc] = sys_putc,
+	[SYS_exit] = sys_exit,
+	[SYS_map_pmo] = sys_map_pmo,
+	[SYS_create_pmo]=sys_create_pmo,
+	[SYS_map_pmo]=sys_map_pmo,
+	[SYS_handle_brk]=sys_handle_brk,
+
+	
+	
 	/* lab3 syscalls finished */
 
 	[SYS_getc] = sys_getc,

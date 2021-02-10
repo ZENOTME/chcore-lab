@@ -69,7 +69,8 @@ struct vmregion *find_vmr_for_va(struct vmspace *vmspace, vaddr_t addr);
 
 void switch_vmspace_to(struct vmspace *);
 
-void commit_page_to_pmo(struct pmobject *pmo, u64 index, paddr_t pa);
+void commit_page_to_pmo(struct pmobject *pmo, paddr_t pa);
+//void commit_page_to_pmo(struct pmobject *pmo, u64 index, paddr_t pa);
 paddr_t get_page_from_pmo(struct pmobject *pmo, u64 index);
 
 struct vmregion *init_heap_vmr(struct vmspace *vmspace, vaddr_t va,

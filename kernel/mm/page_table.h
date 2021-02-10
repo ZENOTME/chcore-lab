@@ -13,6 +13,13 @@
 #pragma once
 
 #include <common/types.h>
+#include <common/vars.h>
+#include <common/macro.h>
+#include <common/types.h>
+#include <common/printk.h>
+#include <common/mm.h>
+#include <common/mmu.h>
+
 
 #define INNER_SHAREABLE  (0x3)
 /* Please search mair_el1 for these memory types. */
@@ -63,6 +70,8 @@
 #define L2_PER_ENTRY_PAGES	  ((PTP_ENTRIES) * (L3_PER_ENTRY_PAGES))
 #define L3_PER_ENTRY_PAGES	  (1)
 
+#define L1_BLOCK_SIZE	(L1_PER_ENTRY_PAGES << PAGE_SHIFT)
+#define L2_BLOCK_SIZE	(L2_PER_ENTRY_PAGES << PAGE_SHIFT)
 /* Bitmask used by GET_VA_OFFSET_Lx */
 #define L1_BLOCK_MASK   ((L1_PER_ENTRY_PAGES << PAGE_SHIFT) - 1)
 #define L2_BLOCK_MASK   ((L2_PER_ENTRY_PAGES << PAGE_SHIFT) - 1)
@@ -71,6 +80,8 @@
 #define GET_VA_OFFSET_L1(va)      (va & L1_BLOCK_MASK)
 #define GET_VA_OFFSET_L2(va)      (va & L2_BLOCK_MASK)
 #define GET_VA_OFFSET_L3(va)      (va & L3_PAGE_MASK)
+
+
 
 /* table format */
 typedef union {
@@ -126,3 +137,9 @@ typedef union {
 typedef struct {
 	pte_t ent[PTP_ENTRIES];
 } ptp_t;
+
+#define GET_PADDR_IN_PTE(entry) \
+	(((u64)entry->table.next_table_addr) << PAGE_SHIFT)
+#define GET_NEXT_PTP(entry) phys_to_virt(GET_PADDR_IN_PTE(entry))
+
+

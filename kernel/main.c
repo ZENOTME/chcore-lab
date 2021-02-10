@@ -65,6 +65,7 @@ void main(void *addr)
 	 *  Initialize and then acquire the big kernel lock.
 	 */
 	kernel_lock_init();
+	lock_kernel();
 	kinfo("[ChCore] lock init finished\n");
 
 	/* Init scheduler with specified policy. */
@@ -75,10 +76,11 @@ void main(void *addr)
 	init_test();
 #endif
 
+	
 	/* Other cores are busy looping on the addr, wake up those cores */
 	enable_smp_cores(addr);
 	kinfo("[ChCore] boot multicore finished\n");
-
+	
 #ifdef TEST
 	/* Create initial thread here */
 	process_create_root(TEST);
@@ -112,6 +114,7 @@ void secondary_start(void)
 	 * Inform the BSP at last to start cpu one by one
 	 * Hints: use cpu_status
 	*/
+	cpu_status[smp_get_cpu_id()] = cpu_run;
 
 #ifndef TEST
 	run_test(false);
@@ -121,7 +124,7 @@ void secondary_start(void)
 	 *  Lab4
 	 *  Acquire the big kernel lock
 	 */
-
+	lock_kernel();
 	/* Where the AP first returns to the user mode */
 	sched();
 	eret_to_thread(switch_context());

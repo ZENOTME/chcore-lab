@@ -322,7 +322,7 @@ u64 sys_handle_brk(u64 addr)
 	size_t len;
 	u64 retval;
 	int ret;
-
+	int pmo_cap;
 	vmspace = obj_get(current_process, VMSPACE_OBJ_ID, TYPE_VMSPACE);
 
 	/*
@@ -347,6 +347,31 @@ u64 sys_handle_brk(u64 addr)
 	 * top.
 	 *
 	 */
+printk(" addr is %lx and vmspace->heap_vmr is %lx\n",addr,vmspace->heap_vmr);	
+	if(!vmspace->heap_vmr||addr==0){
+		pmo = obj_alloc(TYPE_PMO, sizeof(*pmo));
+		if (!pmo) {
+			return -EINVAL;
+		}
+		pmo_init(pmo, PMO_ANONYM, 0, 0);
+		int pmo_cap = cap_alloc(current_process, pmo, 0);
+		if(pmo_cap<0){
+			retval=pmo_cap;
+			obj_free(pmo);
+		}
+		vmr=init_heap_vmr(vmspace,vmspace->user_current_heap,pmo);
+		vmspace->heap_vmr=vmr;
+		retval=vmspace->user_current_heap;
+	}
+	else if(addr>=(vmspace->heap_vmr->start+vmspace->heap_vmr->size)){
+		len=addr-(vmspace->heap_vmr->start+vmspace->heap_vmr->size);
+		vmspace->heap_vmr->size+=len;
+		vmspace->heap_vmr->pmo->size+=len;
+		retval=vmspace->user_current_heap+vmspace->heap_vmr->size;
+	}
+	else if(addr<(vmspace->heap_vmr)){
+		retval=-EINVAL;
+	}
 
 	/*
 	 * return origin heap addr on failure;

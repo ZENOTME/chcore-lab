@@ -119,14 +119,14 @@ void test_buddy(void)
 	ncheck = npages / powl(2, BUDDY_MAX_ORDER - 1);
 	mu_check(nget == ncheck);
 
+
 	/* alloc 2-pages for $npages/2 times */
 	test_alloc(&global_mem, npages / 2, 1);
-
+	
 	/* should have 0 free pages */
 	nget = buddy_num_free_page(&global_mem);
 	ncheck = 0;
 	mu_check(nget == ncheck);
-
 	/* free all pages */
 	for (i = 0; i < npages; i += 2) {
 		page = global_mem.page_metadata + i;
@@ -179,6 +179,7 @@ void test_buddy(void)
 	nget = buddy_num_free_page(&global_mem);
 	ncheck = npages / powl(2, BUDDY_MAX_ORDER - 1);
 	mu_check(nget == ncheck);
+	
 }
 
 MU_TEST_SUITE(test_suite)

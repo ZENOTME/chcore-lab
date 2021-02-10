@@ -5,9 +5,9 @@ typedef unsigned int u32;
 
 /* Physical memory address space: 0-1G */
 #define PHYSMEM_START	(0x0UL)
-#define PHYSMEM_BOOT_END (0x10000000UL)
-#define PERIPHERAL_BASE (0x20000000UL)
-#define PHYSMEM_END	(0x40000000UL)
+#define PHYSMEM_BOOT_END (0x10000000UL)//256MB
+#define PERIPHERAL_BASE (0x20000000UL) //512MB
+#define PHYSMEM_END	(0x40000000UL) //1GB
 
 /* The number of entries in one page table page */
 #define PTP_ENTRIES 512
@@ -94,7 +94,10 @@ void init_boot_pt(void)
 
 	/*
 	 * Map each 2M page
-	 * Usuable memory: PHYSMEM_START ~ PERIPHERAL_BASE
+	 * Usuable memory: PHYSMEM_START ~ PERIPHERAL_BASE (0~512M)
+	 * 
+	 * 0 ~ 256M
+	 *
 	 */
 	for (idx = start_entry_idx; idx < end_entry_idx; ++idx) {
 		boot_ttbr1_l2[idx] = (PHYSMEM_START + idx * SIZE_2M)
