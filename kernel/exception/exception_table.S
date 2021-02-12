@@ -179,6 +179,7 @@ sync_el0_64:
 	exception_exit
 
 el0_syscall:
+
 	sub	sp, sp, #16 * 8
 	stp	x0, x1, [sp, #16 * 0]
 	stp	x2, x3, [sp, #16 * 1]
