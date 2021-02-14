@@ -139,6 +139,7 @@ static u64 load_binary(struct process *process,
 
 	elf = elf_parse_file(bin);
 	pmo_cap = kmalloc(elf->header.e_phnum * sizeof(*pmo_cap));
+kprint_elf(elf);
 	if (!pmo_cap) {
 		r = -ENOMEM;
 		goto out_fail;
@@ -185,9 +186,9 @@ static u64 load_binary(struct process *process,
 			flags = PFLAGS2VMRFLAGS(elf->p_headers[i].p_flags);
 
 			ret = vmspace_map_range(vmspace,
-						ROUND_DOWN(p_vaddr, PAGE_SIZE),
+						p_vaddr,
 						seg_map_sz, flags, pmo);
-
+printk("map addr: %p ,size: %d\n",p_vaddr,seg_map_sz);
 			BUG_ON(ret != 0);
 		}
 	}
