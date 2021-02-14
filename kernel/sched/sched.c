@@ -147,6 +147,7 @@ u64 switch_context(void)
  */
 void sys_yield(void)
 {
+	cur_sched_ops->sched_handle_timer_irq();
 }
 
 int sched_init(struct sched_ops *sched_ops)

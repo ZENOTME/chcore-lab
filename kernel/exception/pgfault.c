@@ -87,9 +87,9 @@ int handle_trans_fault(struct vmspace *vmspace, vaddr_t fault_addr)
 	 * has been omitted in our lab for simplification.
 	 */
 	vmr=find_vmr_for_va(vmspace,fault_addr);
-	if(!vmr)goto bad;
+	if(!vmr){kinfo("vmr is null\n");goto bad;}
 	pmo=vmr->pmo;
-	if(pmo->type!=PMO_ANONYM)goto bad;
+	if(pmo->type!=PMO_ANONYM){kinfo("pmo type is not PMO_ANONYM\n");goto bad;}
 
 	/* Allocate and setup a user stack for the init thread */
 	pa=(paddr_t) virt_to_phys(kmalloc(PAGE_SIZE));

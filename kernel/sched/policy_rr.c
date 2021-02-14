@@ -51,7 +51,24 @@ struct thread idle_threads[PLAT_CPU_NUM];
  */
 int rr_sched_enqueue(struct thread *thread)
 {
-	return -1;
+	//check
+	if(!thread)return -1;
+	if(!thread->thread_ctx)return -1;
+	if(thread->thread_ctx->state==TS_READY)return -1;
+	if(!(thread->thread_ctx->affinity>=NO_AFF&&thread->thread_ctx->affinity<PLAT_CPU_NUM))return -1;
+	//BUG_ON(!(thread->thread_ctx->affinity>=NO_AFF&&thread->thread_ctx->affinity<PLAT_CPU_NUM));
+
+	thread->thread_ctx->state=TS_READY;
+	if(thread->thread_ctx->type==TYPE_IDLE)return 0;
+	if(thread->thread_ctx->affinity==NO_AFF){
+		thread->thread_ctx->cpuid=smp_get_cpu_id();
+		list_append(&thread->ready_queue_node,&rr_ready_queue[thread->thread_ctx->cpuid]);
+	}
+	else{
+		thread->thread_ctx->cpuid=thread->thread_ctx->affinity;
+		list_append(&thread->ready_queue_node,&rr_ready_queue[thread->thread_ctx->affinity]);
+	}
+	return 0;
 }
 
 /*
@@ -62,7 +79,15 @@ int rr_sched_enqueue(struct thread *thread)
  */
 int rr_sched_dequeue(struct thread *thread)
 {
-	return -1;
+	//check
+	if(!thread)return -1;
+	if(!thread->thread_ctx)return -1;
+	if(thread->thread_ctx->state!=TS_READY)return -1;
+	if(thread->thread_ctx->type==TYPE_IDLE)return -1;
+
+	thread->thread_ctx->state=TS_INTER;
+	list_del(&thread->ready_queue_node);
+	return 0;
 }
 
 /*
@@ -78,7 +103,16 @@ int rr_sched_dequeue(struct thread *thread)
  */
 struct thread *rr_sched_choose_thread(void)
 {
-	return NULL;
+	struct thread *iter=NULL,*temp=NULL;
+	u32 cpuid=smp_get_cpu_id();
+	if(list_empty(&rr_ready_queue[cpuid]))return &idle_threads[cpuid];
+	for_each_in_list_safe(iter,temp,ready_queue_node,&rr_ready_queue[cpuid]){
+		if(iter->thread_ctx->state==TS_READY){
+			rr_sched_dequeue(iter);
+			return iter;
+		}
+	}
+	return &idle_threads[cpuid];
 }
 
 static inline void rr_sched_refill_budget(struct thread *target, u32 budget)
@@ -99,7 +133,11 @@ static inline void rr_sched_refill_budget(struct thread *target, u32 budget)
  */
 int rr_sched(void)
 {
-	return -1;
+	struct thread* cur_thread;
+	if(current_thread)rr_sched_enqueue(current_thread);
+	BUG_ON(!(cur_thread=rr_sched_choose_thread()));
+	switch_to_thread(cur_thread);
+	return 0;
 }
 
 /*
@@ -140,6 +178,8 @@ int rr_sched_init(void)
  */
 void rr_sched_handle_timer_irq(void)
 {
+	rr_sched();
+	eret_to_thread(switch_context());
 }
 
 struct sched_ops rr = {
