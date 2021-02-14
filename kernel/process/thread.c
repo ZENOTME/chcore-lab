@@ -195,7 +195,7 @@ static u64 load_binary(struct process *process,
 			 * You should copy data from the elf into the physical memory in pmo.
 			 * The physical address of a pmo can be get from pmo->start.
 			 */
-			memcpy(phys_to_virt(pmo->start),(bin+elf->p_headers[i].p_offset),elf->p_headers[i].p_filesz);
+			memcpy(phys_to_virt(pmo->start)+(p_vaddr-ROUND_DOWN(p_vaddr, PAGE_SIZE)),(bin+elf->p_headers[i].p_offset),elf->p_headers[i].p_filesz);
 			flags = PFLAGS2VMRFLAGS(elf->p_headers[i].p_flags);
 
 			ret = vmspace_map_range(vmspace,
