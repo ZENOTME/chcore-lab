@@ -28,8 +28,10 @@ int main(int argc, char *argv[])
 	int child_thread_cap;
 	int i;
 	u64 thread_i;
-
+	create_thread(thread_routine, 99, PRIO, 0);
+	/*
 	for (thread_i = 0; thread_i < 2; ++thread_i) {
+		printf("create...\n");
 		child_thread_cap =
 		    create_thread(thread_routine, thread_i, PRIO, 0);
 		if (child_thread_cap < 0)
@@ -37,6 +39,7 @@ int main(int argc, char *argv[])
 			       child_thread_cap);
 		for (i = 0; i < 10000; i++) ;
 	}
+	*/
 
 	return 0;
 }
