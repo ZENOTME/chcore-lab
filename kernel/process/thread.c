@@ -139,7 +139,7 @@ static u64 load_binary(struct process *process,
 
 	elf = elf_parse_file(bin);
 	pmo_cap = kmalloc(elf->header.e_phnum * sizeof(*pmo_cap));
-kprint_elf(elf);
+
 	if (!pmo_cap) {
 		r = -ENOMEM;
 		goto out_fail;
@@ -169,7 +169,7 @@ kprint_elf(elf);
 				r = -ENOMEM;
 				goto out_free_cap;
 			}
-			seg_map_sz=ROUND_UP(seg_sz,PAGE_SIZE);
+			seg_map_sz=ROUND_UP(p_vaddr+seg_sz,PAGE_SIZE)-ROUND_DOWN(p_vaddr,PAGE_SIZE);
 			pmo_init(pmo, PMO_DATA, seg_map_sz, 0);
 			pmo_cap[i] = cap_alloc(process, pmo, 0);
 			if (pmo_cap[i] < 0) {
@@ -182,13 +182,13 @@ kprint_elf(elf);
 			 * You should copy data from the elf into the physical memory in pmo.
 			 * The physical address of a pmo can be get from pmo->start.
 			 */
-			memcpy(phys_to_virt(pmo->start),(bin+elf->p_headers[i].p_offset),elf->p_headers[i].p_filesz);
+			memcpy(phys_to_virt(pmo->start)+(p_vaddr-ROUND_DOWN(p_vaddr,PAGE_SIZE)),(bin+elf->p_headers[i].p_offset),elf->p_headers[i].p_filesz);
 			flags = PFLAGS2VMRFLAGS(elf->p_headers[i].p_flags);
 
 			ret = vmspace_map_range(vmspace,
-						p_vaddr,
+						ROUND_DOWN(p_vaddr,PAGE_SIZE),
 						seg_map_sz, flags, pmo);
-printk("map addr: %p ,size: %d\n",p_vaddr,seg_map_sz);
+printk("map addr: %p ,size: %d\n",ROUND_DOWN(p_vaddr,PAGE_SIZE),seg_map_sz);
 			BUG_ON(ret != 0);
 		}
 	}
