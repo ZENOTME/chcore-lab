@@ -91,7 +91,13 @@ void unlock(struct lock *lock)
 	 * Unlock the ticket lock here
 	 * Your code should be no more than 5 lines
 	*/
+	if(lock->next<=lock->owner){
+		//printk("lock->next: %d owner: %d\n",lock->next,lock->owner);
+		//BUG_ON(1);
+	}
+	
 	lock->owner++;
+
 }
 
 /** 

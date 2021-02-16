@@ -373,8 +373,8 @@ static void kprint_elf_sheader(const char *prefix,
 	kinfo("%s.sh_entsize   = 0x%llx\n", prefix, sheader->sh_entsize);
 }
 
-__attribute__ ((unused))
-static void kprint_elf(struct elf_file *elf)
+//__attribute__ ((unused))
+void kprint_elf(struct elf_file *elf)
 {
 	int i;
 

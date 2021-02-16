@@ -221,9 +221,10 @@ int map_range_in_pgtbl(vaddr_t * pgtbl, vaddr_t va, paddr_t pa,
 {
 	// <lab2>
 	// align work
-	vaddr_t va_begin=ROUND_DOWN(va,PAGE_SIZE);
+	BUG_ON((pa&PAGE_SIZE==pa)&&(va&PAGE_SIZE==va));
+	vaddr_t va_begin=va;
 	vaddr_t va_end=ROUND_UP(va+len,PAGE_SIZE);
-	paddr_t pa_begin=ROUND_DOWN(pa,PAGE_SIZE);
+	paddr_t pa_begin=pa;
 	paddr_t pa_end=ROUND_UP(pa+len,PAGE_SIZE);
 	BUG_ON(((va_end-va_begin)/PAGE_SIZE)!=((pa_end-pa_begin)/PAGE_SIZE));
 	int npage=(va_end-va_begin)/PAGE_SIZE;

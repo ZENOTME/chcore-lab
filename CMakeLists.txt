@@ -30,7 +30,7 @@ execute_process (
 
 
 set(CMAKE_C_FLAGS
-    "-Wall -fPIC -nostdlib -nostartfiles -ffreestanding \
+    " -fPIC -nostdlib -nostartfiles -ffreestanding \
     -DCHCORE -nostdinc ")
 
 project (chos C ASM)

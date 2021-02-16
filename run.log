@@ -1,0 +1,301 @@
+*** Now building application hello
+./scripts/docker_build.sh hello
+compiling kernel ...
+-- The C compiler identification is GNU 7.4.0
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/aarch64-linux-gnu-gcc
+-- Check for working C compiler: /usr/bin/aarch64-linux-gnu-gcc
+-- Check for working C compiler: /usr/bin/aarch64-linux-gnu-gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /chos/build
+before ninja
+[0/38] Building C object CMakeFiles/kernel.img.dir/boot/init_c.c.o[K[0/38] Building C object CMakeFiles/kernel.img.dir/boot/mmu.c.o[K[0/38] Building ASM object CMakeFiles/kernel.img.dir/boot/start.S.o[K[1/38] Building ASM object CMakeFiles/kernel.img.dir/boot/start.S.o[K[1/38] Building ASM object CMakeFiles/kernel.img.dir/boot/tools.S.o[K[2/38] Building C object CMakeFiles/kernel.img.dir/boot/mmu.c.o[K[2/38] Building C object CMakeFiles/kernel.img.dir/boot/uart.c.o[K[3/38] Building ASM object CMakeFiles/kernel.img.dir/boot/tools.S.o[K[3/38] Building ASM object CMakeFiles/kernel.img.dir/user/binary_include.S.o[K[4/38] Building C object CMakeFiles/kernel.img.dir/boot/init_c.c.o[K[4/38] Building ASM object kernel/CMakeFiles/chos-arch.dir/head.S.o[K[5/38] Building ASM object CMakeFiles/kernel.img.dir/user/binary_include.S.o[K[5/38] Building C object kernel/CMakeFiles/chos-arch.dir/main.c.o[K[6/38] Building C object CMakeFiles/kernel.img.dir/boot/uart.c.o[K[6/38] Building C object kernel/CMakeFiles/chos-arch.dir/monitor.c.o[K[7/38] Building ASM object kernel/CMakeFiles/chos-arch.dir/head.S.o[K[7/38] Building ASM object kernel/CMakeFiles/chos-arch.dir/common/tools.S.o[K[8/38] Building C object kernel/CMakeFiles/chos-arch.dir/main.c.o[K[8/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/cpio.c.o[K[9/38] Building ASM object kernel/CMakeFiles/chos-arch.dir/common/tools.S.o[K[9/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/elf.c.o[K[10/38] Building C object kernel/CMakeFiles/chos-arch.dir/monitor.c.o[K[10/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/uart.c.o[K[11/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/uart.c.o[K[11/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/printk.c.o[K[12/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/elf.c.o[K[12/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/radix.c.o[K[13/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/cpio.c.o[K[13/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/buddy.c.o[K[14/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/printk.c.o[K[14/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/kmalloc.c.o[K[15/38] Building C object kernel/CMakeFiles/chos-arch.dir/common/radix.c.o[K
+../kernel/common/radix.c:12:0: warning: "CHCORE" redefined
+ #define CHCORE
+ 
+<command-line>:0:0: note: this is the location of the previous definition
+[15/38] Linking C static library kernel/libchos-arch.a[K[16/38] Linking C static library kernel/libchos-arch.a[K[16/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/mm.c.o[K[17/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/buddy.c.o[K[17/38] Building ASM object kernel/mm/CMakeFiles/chos-mm.dir/page_table.S.o[K[18/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/mm.c.o[K
+../kernel/mm/mm.c: In function 'kernel_space_check':
+../kernel/mm/mm.c:94:16: warning: variable 'kernel_val' set but not used [-Wunused-but-set-variable]
+  unsigned long kernel_val;
+                ^~~~~~~~~~
+[18/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/page_table.c.o[K[19/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/kmalloc.c.o[K[19/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/slab.c.o[K[20/38] Building ASM object kernel/mm/CMakeFiles/chos-mm.dir/page_table.S.o[K[20/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/uaccess.c.o[K[21/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/page_table.c.o[K[21/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/vm_syscall.c.o[K[22/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/uaccess.c.o[K[22/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/vmregion.c.o[K[23/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/slab.c.o[K[23/38] Building C object kernel/process/CMakeFiles/chos-object.dir/capability.c.o[K[24/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/vm_syscall.c.o[K
+../kernel/mm/vm_syscall.c: In function 'sys_handle_brk':
+../kernel/mm/vm_syscall.c:372:14: warning: comparison between pointer and integer
+  else if(addr<(vmspace->heap_vmr)){
+              ^
+../kernel/mm/vm_syscall.c:325:6: warning: unused variable 'pmo_cap' [-Wunused-variable]
+  int pmo_cap;
+      ^~~~~~~
+../kernel/mm/vm_syscall.c:324:6: warning: unused variable 'ret' [-Wunused-variable]
+  int ret;
+      ^~~
+../kernel/mm/vm_syscall.c:381:9: warning: 'retval' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  return retval;
+         ^~~~~~
+[24/38] Building C object kernel/process/CMakeFiles/chos-object.dir/process.c.o[K[25/38] Building C object kernel/mm/CMakeFiles/chos-mm.dir/vmregion.c.o[K[25/38] Building C object kernel/process/CMakeFiles/chos-object.dir/thread.c.o[K[26/38] Building C object kernel/process/CMakeFiles/chos-object.dir/capability.c.o[K[26/38] Building C object kernel/process/CMakeFiles/chos-object.dir/thread_env.c.o[K[27/38] Building C object kernel/process/CMakeFiles/chos-object.dir/thread.c.o[K
+../kernel/process/thread.c: In function 'load_binary':
+../kernel/process/thread.c:142:1: warning: implicit declaration of function 'kprint_elf'; did you mean 'printk'? [-Wimplicit-function-declaration]
+ kprint_elf(elf);
+ ^~~~~~~~~~
+ printk
+In file included from ../kernel/common/mm.h:17:0,
+                 from ../kernel/process/thread.c:19:
+../kernel/common/mmu.h:32:25: warning: passing argument 1 of 'memcpy' makes pointer from integer without a cast [-Wint-conversion]
+ #define phys_to_virt(x) ((vaddr_t)((paddr_t)(x) + KBASE))
+                         ^
+../kernel/process/thread.c:185:11: note: in expansion of macro 'phys_to_virt'
+    memcpy(phys_to_virt(pmo->start)+(p_vaddr-ROUND_DOWN(p_vaddr,PAGE_SIZE)),(bin+elf->p_headers[i].p_offset),elf->p_headers[i].p_filesz);
+           ^~~~~~~~~~~~
+In file included from ../kernel/process/thread.c:16:0:
+../kernel/common/util.h:33:20: note: expected 'void *' but argument is of type 'long long unsigned int'
+ static inline void memcpy(void *dst, const void *src, size_t size)
+                    ^~~~~~
+[27/38] Building C object kernel/syscall/CMakeFiles/chos-syscall.dir/syscall.c.o[K[28/38] Building C object kernel/syscall/CMakeFiles/chos-syscall.dir/syscall.c.o[K[28/38] Building ASM object kernel/exception/CMakeFiles/chos-exception.dir/exception.S.o[K[29/38] Building ASM object kernel/exception/CMakeFiles/chos-exception.dir/exception.S.o[K[29/38] Building C object kernel/exception/CMakeFiles/chos-exception.dir/exception.c.o[K[30/38] Building C object kernel/process/CMakeFiles/chos-object.dir/thread_env.c.o[K[30/38] Building ASM object kernel/exception/CMakeFiles/chos-exception.dir/exception_table.S.o[K[31/38] Building ASM object kernel/exception/CMakeFiles/chos-exception.dir/exception_table.S.o[K[31/38] Building ASM object kernel/exception/CMakeFiles/chos-exception.dir/irq.S.o[K[32/38] Building C object kernel/exception/CMakeFiles/chos-exception.dir/exception.c.o[K[32/38] Building C object kernel/exception/CMakeFiles/chos-exception.dir/pgfault.c.o[K[33/38] Building ASM object kernel/exception/CMakeFiles/chos-exception.dir/irq.S.o[K[33/38] Building C object kernel/sched/CMakeFiles/chos-sched.dir/context.c.o[K[34/38] Building C object kernel/process/CMakeFiles/chos-object.dir/process.c.o[K[34/38] Building C object kernel/sched/CMakeFiles/chos-sched.dir/sched.c.o[K[35/38] Building C object kernel/exception/CMakeFiles/chos-exception.dir/pgfault.c.o[K
+../kernel/exception/pgfault.c: In function 'handle_trans_fault':
+../kernel/exception/pgfault.c:71:6: warning: unused variable 'offset' [-Wunused-variable]
+  u64 offset;
+      ^~~~~~
+[36/38] Building C object kernel/sched/CMakeFiles/chos-sched.dir/context.c.o[K[37/38] Building C object kernel/sched/CMakeFiles/chos-sched.dir/sched.c.o[K
+../kernel/sched/sched.c: In function 'switch_context':
+../kernel/sched/sched.c:82:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return target_ctx->ec.reg;
+         ^~~~~~~~~~
+[37/38] Linking C executable kernel.img[K[38/38] Linking C executable kernel.img[K
+after ninja
+./scripts/create_gdbinit.sh hello
+*** Now starting qemu
+qemu-system-aarch64 -machine raspi3 -serial null -serial mon:stdio -m size=1G  -kernel ./build/kernel.img -gdb tcp::1234 
+boot: init_c
+[BOOT] Install boot page table
+[BOOT] Enable el1 MMU
+[BOOT] Jump to kernel main
+[2J[INFO] [ChCore] uart init finished
+[INFO] Address of main() is 0xffffff000008c08c
+[INFO] 123456 decimal is 0361100 octal
+[INFO] entering stack_test 5
+[INFO] entering stack_test 4
+[INFO] entering stack_test 3
+[INFO] entering stack_test 2
+[INFO] entering stack_test 1
+[INFO] entering stack_test 0
+Stack backtrace:
+LR ffffff000008c070 FP ffffff00000cb0b0 Args 0 0 0 cccccccccccccccd cb0d0
+LR ffffff000008c070 FP ffffff00000cb0d0 Args 1 cccccccccccccccd ffffff00000cb0f0 ffffff000008c070 2
+LR ffffff000008c070 FP ffffff00000cb0f0 Args 2 cccccccccccccccd ffffff00000cb110 ffffff000008c070 3
+LR ffffff000008c070 FP ffffff00000cb110 Args 3 cccccccccccccccd ffffff00000cb130 ffffff000008c070 4
+LR ffffff000008c070 FP ffffff00000cb130 Args 4 cccccccccccccccd ffffff00000cb150 ffffff000008c070 5
+LR ffffff000008c070 FP ffffff00000cb150 Args 5 7 ffffff00000cb170 ffffff000008c0d4 0
+LR ffffff000008c070 FP ffffff00000cb170 Args 0 7 0 ffffff000008c018 0
+[INFO] leaving stack_test 0
+[INFO] leaving stack_test 1
+[INFO] leaving stack_test 2
+[INFO] leaving stack_test 3
+[INFO] leaving stack_test 4
+[INFO] leaving stack_test 5
+[INFO] mm init finished
+[INFO] Set exception vector
+[INFO] [ChCore] interrupt init finished
+[INFO] elf -> ffffff0020200280
+[INFO]  .header
+[INFO]   .e_indent
+[INFO]    .ei_magic      = 0x7f 0x45 0x4c 0x46
+[INFO]    .ei_class      = 0x2
+[INFO]    .ei_data       = 0x1
+[INFO]    .ei_version    = 0x1
+[INFO]    .ei_osabi      = 0x0
+[INFO]    .ei_abiversion = 0x0
+[INFO]    .ei_pad        = 0x0 0x0 0x0 0x0 0x0 0x0 0x0
+[INFO]   .e_type      = 0x2
+[INFO]   .e_machine   = 0xb7
+[INFO]   .e_version   = 0x1
+[INFO]   .e_entry     = 0x4001dc
+[INFO]   .e_phoff     = 0x40
+[INFO]   .e_shoff     = 0x2958
+[INFO]   .e_flags     = 0x0
+[INFO]   .e_ehsize    = 0x40
+[INFO]   .e_phentsize = 0x38
+[INFO]   .e_phnum     = 0x5
+[INFO]   .e_shentsize = 0x40
+[INFO]   .e_shnum     = 0xb
+[INFO]   .e_shstrndx  = 0xa
+[INFO]  .pheader[0]
+[INFO]   .p_type   = 0x1
+[INFO]   .p_flags  = 0x5
+[INFO]   .p_offset = 0x0
+[INFO]   .p_vaddr  = 0x400000
+[INFO]   .p_paddr  = 0x400000
+[INFO]   .p_filesz = 0x1a90
+[INFO]   .p_memsz  = 0x1a90
+[INFO]   .p_align  = 0x10000
+[INFO]  .pheader[1]
+[INFO]   .p_type   = 0x1
+[INFO]   .p_flags  = 0x6
+[INFO]   .p_offset = 0x1fd8
+[INFO]   .p_vaddr  = 0x411fd8
+[INFO]   .p_paddr  = 0x411fd8
+[INFO]   .p_filesz = 0x28
+[INFO]   .p_memsz  = 0x30
+[INFO]   .p_align  = 0x10000
+[INFO]  .pheader[2]
+[INFO]   .p_type   = 0x4
+[INFO]   .p_flags  = 0x4
+[INFO]   .p_offset = 0x158
+[INFO]   .p_vaddr  = 0x400158
+[INFO]   .p_paddr  = 0x400158
+[INFO]   .p_filesz = 0x24
+[INFO]   .p_memsz  = 0x24
+[INFO]   .p_align  = 0x4
+[INFO]  .pheader[3]
+[INFO]   .p_type   = 0x6474e551
+[INFO]   .p_flags  = 0x6
+[INFO]   .p_offset = 0x0
+[INFO]   .p_vaddr  = 0x0
+[INFO]   .p_paddr  = 0x0
+[INFO]   .p_filesz = 0x0
+[INFO]   .p_memsz  = 0x0
+[INFO]   .p_align  = 0x10
+[INFO]  .pheader[4]
+[INFO]   .p_type   = 0x6474e552
+[INFO]   .p_flags  = 0x4
+[INFO]   .p_offset = 0x1fd8
+[INFO]   .p_vaddr  = 0x411fd8
+[INFO]   .p_paddr  = 0x411fd8
+[INFO]   .p_filesz = 0x28
+[INFO]   .p_memsz  = 0x28
+[INFO]   .p_align  = 0x1
+[INFO]  .sheader[0]
+[INFO]   .sh_name      = 0x0
+[INFO]   .sh_type      = 0x0
+[INFO]   .sh_flags     = 0x0
+[INFO]   .sh_addr      = 0x0
+[INFO]   .sh_offset    = 0x0
+[INFO]   .sh_size      = 0x0
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x0
+[INFO]   .sh_entsize   = 0x0
+[INFO]  .sheader[1]
+[INFO]   .sh_name      = 0x1b
+[INFO]   .sh_type      = 0x7
+[INFO]   .sh_flags     = 0x2
+[INFO]   .sh_addr      = 0x400158
+[INFO]   .sh_offset    = 0x158
+[INFO]   .sh_size      = 0x24
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x4
+[INFO]   .sh_entsize   = 0x0
+[INFO]  .sheader[2]
+[INFO]   .sh_name      = 0x2e
+[INFO]   .sh_type      = 0x1
+[INFO]   .sh_flags     = 0x6
+[INFO]   .sh_addr      = 0x400180
+[INFO]   .sh_offset    = 0x180
+[INFO]   .sh_size      = 0x18f0
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x8
+[INFO]   .sh_entsize   = 0x0
+[INFO]  .sheader[3]
+[INFO]   .sh_name      = 0x34
+[INFO]   .sh_type      = 0x1
+[INFO]   .sh_flags     = 0x32
+[INFO]   .sh_addr      = 0x401a70
+[INFO]   .sh_offset    = 0x1a70
+[INFO]   .sh_size      = 0x20
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x8
+[INFO]   .sh_entsize   = 0x1
+[INFO]  .sheader[4]
+[INFO]   .sh_name      = 0x3c
+[INFO]   .sh_type      = 0x1
+[INFO]   .sh_flags     = 0x3
+[INFO]   .sh_addr      = 0x411fd8
+[INFO]   .sh_offset    = 0x1fd8
+[INFO]   .sh_size      = 0x10
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x8
+[INFO]   .sh_entsize   = 0x8
+[INFO]  .sheader[5]
+[INFO]   .sh_name      = 0x41
+[INFO]   .sh_type      = 0x1
+[INFO]   .sh_flags     = 0x3
+[INFO]   .sh_addr      = 0x411fe8
+[INFO]   .sh_offset    = 0x1fe8
+[INFO]   .sh_size      = 0x18
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x8
+[INFO]   .sh_entsize   = 0x8
+[INFO]  .sheader[6]
+[INFO]   .sh_name      = 0x4a
+[INFO]   .sh_type      = 0x8
+[INFO]   .sh_flags     = 0x3
+[INFO]   .sh_addr      = 0x412000
+[INFO]   .sh_offset    = 0x2000
+[INFO]   .sh_size      = 0x8
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x4
+[INFO]   .sh_entsize   = 0x0
+[INFO]  .sheader[7]
+[INFO]   .sh_name      = 0x4f
+[INFO]   .sh_type      = 0x1
+[INFO]   .sh_flags     = 0x30
+[INFO]   .sh_addr      = 0x0
+[INFO]   .sh_offset    = 0x2000
+[INFO]   .sh_size      = 0x32
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x1
+[INFO]   .sh_entsize   = 0x1
+[INFO]  .sheader[8]
+[INFO]   .sh_name      = 0x1
+[INFO]   .sh_type      = 0x2
+[INFO]   .sh_flags     = 0x0
+[INFO]   .sh_addr      = 0x0
+[INFO]   .sh_offset    = 0x2038
+[INFO]   .sh_size      = 0x630
+[INFO]   .sh_link      = 0x9
+[INFO]   .sh_info      = 0x18
+[INFO]   .sh_addralign = 0x8
+[INFO]   .sh_entsize   = 0x18
+[INFO]  .sheader[9]
+[INFO]   .sh_name      = 0x9
+[INFO]   .sh_type      = 0x3
+[INFO]   .sh_flags     = 0x0
+[INFO]   .sh_addr      = 0x0
+[INFO]   .sh_offset    = 0x2668
+[INFO]   .sh_size      = 0x294
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x1
+[INFO]   .sh_entsize   = 0x0
+[INFO]  .sheader[10]
+[INFO]   .sh_name      = 0x11
+[INFO]   .sh_type      = 0x3
+[INFO]   .sh_flags     = 0x0
+[INFO]   .sh_addr      = 0x0
+[INFO]   .sh_offset    = 0x28fc
+[INFO]   .sh_size      = 0x58
+[INFO]   .sh_link      = 0x0
+[INFO]   .sh_info      = 0x0
+[INFO]   .sh_addralign = 0x1
+[INFO]   .sh_entsize   = 0x0
+map addr: 400000 ,size: 8192
+map addr: 411fd8 ,size: 4096
+[INFO] [ChCore] root thread init finished
+hello, world 1
+[INFO] pgfault at 0x412000 failed
+[INFO] sys_exit with value -14
+[ChCore] Lab stalling ... 
+Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	Pu	QEMU: Terminated
+

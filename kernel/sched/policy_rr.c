@@ -83,8 +83,8 @@ int rr_sched_dequeue(struct thread *thread)
 	if(!thread)return -1;
 	if(!thread->thread_ctx)return -1;
 	if(thread->thread_ctx->state!=TS_READY)return -1;
+	//
 	if(thread->thread_ctx->type==TYPE_IDLE)return -1;
-
 	thread->thread_ctx->state=TS_INTER;
 	list_del(&thread->ready_queue_node);
 	return 0;
@@ -105,13 +105,15 @@ struct thread *rr_sched_choose_thread(void)
 {
 	struct thread *iter=NULL,*temp=NULL;
 	u32 cpuid=smp_get_cpu_id();
-	if(list_empty(&rr_ready_queue[cpuid]))return &idle_threads[cpuid];
+	if(list_empty(&rr_ready_queue[cpuid]))goto idle;
 	for_each_in_list_safe(iter,temp,ready_queue_node,&rr_ready_queue[cpuid]){
 		if(iter->thread_ctx->state==TS_READY){
 			rr_sched_dequeue(iter);
 			return iter;
 		}
 	}
+idle:
+	idle_threads[cpuid].thread_ctx->state=TS_INTER;
 	return &idle_threads[cpuid];
 }
 
@@ -179,7 +181,7 @@ int rr_sched_init(void)
 void rr_sched_handle_timer_irq(void)
 {
 	rr_sched();
-	//eret_to_thread(switch_context());
+	eret_to_thread(switch_context());
 }
 
 struct sched_ops rr = {
