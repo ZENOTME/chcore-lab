@@ -119,6 +119,7 @@ idle:
 
 static inline void rr_sched_refill_budget(struct thread *target, u32 budget)
 {
+	target->thread_ctx->sc->budget=budget;
 }
 
 /*
@@ -136,8 +137,10 @@ static inline void rr_sched_refill_budget(struct thread *target, u32 budget)
 int rr_sched(void)
 {
 	struct thread* cur_thread;
+	if(current_thread&&current_thread->thread_ctx->sc->budget>0)return 0;
 	if(current_thread)rr_sched_enqueue(current_thread);
 	BUG_ON(!(cur_thread=rr_sched_choose_thread()));
+	rr_sched_refill_budget(cur_thread,DEFAULT_BUDGET);
 	switch_to_thread(cur_thread);
 	return 0;
 }
@@ -180,8 +183,8 @@ int rr_sched_init(void)
  */
 void rr_sched_handle_timer_irq(void)
 {
-	rr_sched();
-	eret_to_thread(switch_context());
+	if(current_thread&&current_thread->thread_ctx->sc->budget>0)
+		current_thread->thread_ctx->sc->budget--;
 }
 
 struct sched_ops rr = {

@@ -55,6 +55,7 @@ int main(int argc, char *argv[], char *envp[])
 	ret = ipc_register_client(new_thread_cap, &client_ipc_struct);
 	fail_cond(ret < 0, "ipc_register_client failed\n");
 
+	printf("[Client] Send\n");
 	ret = ipc_reg_call(&client_ipc_struct, (u64) 526);
 	printf("[Client] Return %d!\n", ret);
 

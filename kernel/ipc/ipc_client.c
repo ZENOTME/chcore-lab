@@ -105,7 +105,7 @@ static int create_connection(struct thread *source, struct thread *target,
 	conn_idx = find_next_zero_bit(server_ipc_config->conn_bmp,
 				      server_ipc_config->max_client, 0);
 	set_bit(conn_idx, server_ipc_config->conn_bmp);
-
+	conn->callback=server_ipc_config->callback;
 	// Create the server thread's stack
 	server_stack_base =
 	    vm_config->stack_base_addr + conn_idx * vm_config->stack_size;
@@ -122,7 +122,7 @@ static int create_connection(struct thread *source, struct thread *target,
 			  VMR_READ | VMR_WRITE, stack_pmo);
 
 	conn->server_stack_top = server_stack_base + stack_size;
-
+//conn->server_stack_size=stack_size;
 	// Create and map the shared buffer for client and server
 	server_buf_base =
 	    vm_config->buf_base_addr + conn_idx * vm_config->buf_size;
@@ -160,7 +160,7 @@ static int create_connection(struct thread *source, struct thread *target,
 		goto out_free_obj;
 	}
 	conn->server_conn_cap = server_conn_cap;
-
+	
 	return conn_cap;
  out_free_stack_pmo:
 	kfree(stack_pmo);

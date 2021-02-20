@@ -92,8 +92,8 @@ void unlock(struct lock *lock)
 	 * Your code should be no more than 5 lines
 	*/
 	if(lock->next<=lock->owner){
-		//printk("lock->next: %d owner: %d\n",lock->next,lock->owner);
-		//BUG_ON(1);
+		printk("lock->next: %d owner: %d\n",lock->next,lock->owner);
+		BUG_ON(1);
 	}
 	
 	lock->owner++;

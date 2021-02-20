@@ -58,6 +58,7 @@ int main(int argc, char *argv[], char *envp[])
 	fail_cond(ret < 0, "ipc_register_client failed\n");
 
 	/* IPC send cap */
+	printf("[Client] Send!\n");
 	ipc_msg = ipc_create_msg(&client_ipc_struct, 4 * 100, 0);
 	for (i = 0; i < 100; i++) {
 		ipc_set_msg_data(ipc_msg, (char *)&i, i * 4, 4);

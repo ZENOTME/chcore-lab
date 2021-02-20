@@ -6,9 +6,10 @@
 
 void ipc_dispatcher(ipc_msg_t * ipc_msg)
 {
+	printf("ipc_dispatcher call!\n");
 	int ret = 0;
 	int i = 0;
-	int len = ipc_msg->data_len;
+	int len = ipc_msg->data_len; 
 
 	while ((i * 4) < len) {
 		ret += ((int *)ipc_get_msg_data(ipc_msg))[i];
@@ -27,6 +28,7 @@ int main(int argc, char *argv[], char *envp[])
 	info_page_addr = (void *)(envp[0]);
 	fail_cond(info_page_addr == NULL, "[Server] no info received.\n");
 
+	printf("server call back addr is %lx\n",ipc_dispatcher);
 	ret = ipc_register_server(ipc_dispatcher);
 	fail_cond(ret < 0, "[IPC Server] register server failed\n", ret);
 
